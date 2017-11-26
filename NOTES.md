@@ -301,3 +301,72 @@ function calculatePayment (price = isRequired('price'), salesTax = 0.047, discou
 - However, `babel` will not always get our code all the way there. Sometimes we need *polyfills* to fill in these gaps.
 - **Compiling** – run syntax through various syntax transforms.
 - **Polyfilling** - add new methods or objects to the global JavaScript object. It's adding new functionality to the browser.
+
+## ES6 imports, exports, modules, and named imports
+- In ES6, you can `export` more than one item from a module. These are called *named exports*. You `import` these *named exports*b y specifying them as *named imports*.
+```javascript
+// math.js
+export function add (x, y) {
+    return x + y;
+}
+
+export function multiply(x, y) {
+    return x * y;
+}
+
+// main.js
+import { add, multiply } from './math';
+```
+- Use `import * as X` syntax for importing everything from a module under a particular variable name.
+```javascript
+// main.js
+import * as math from './math';
+
+math.add(1, 2); // 3
+math.multiply(1, 2); // 2
+```
+- Modules can also export single values using `default`. These are *unnamed exports*.
+```javascript
+// add.js
+export default function add (x, y) {
+    return x + y;
+}
+
+// main.js
+import add from './math';
+```
+- You can mix *named* and *unnamed exports*.
+```javascript
+// math.js
+export function add (x, y) {
+    return x + y;
+}
+
+export default function multiply(x, y) {
+    return x * y;
+}
+
+// main.js
+import multiply, { add } from './math';
+```
+
+## `async` / `await` in React
+- The main benefit of `async` / `await` syntax is that it allows you to write asynchronous code in a seemingly synchronous manner.
+```javascript
+// our promise
+function getUser () {
+    return new Promise((resolve, reject ) => {
+        setTimeout(() => resolve({ name: 'Parker' }), 2000)
+    });
+}
+
+async function handleGetUser () {
+
+    try {
+        const user = await getUser();
+        console.log(user); // { name: 'Parker' }
+    } catch (error) {
+        console.log('Error in handleGetUser', error);
+    }
+}
+```
